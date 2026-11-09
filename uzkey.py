@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 uzkey - Uzbek New Latin Keyboard Manager CLI
-O'zbek tili yangi alifbosi klaviaturasi boshqaruvchisi.
+O'zbek tili yangi alifbosi klaviaturasi boshqaruv dasturi.
 """
 
 import sys
@@ -15,20 +15,36 @@ XKB_SYMBOLS_DIR = os.path.join(HOME, ".config", "xkb", "symbols")
 XKB_UZ_FILE = os.path.join(XKB_SYMBOLS_DIR, "uz")
 
 LAYOUT_TEMPLATES = {
-    "shift": """// Shift Mode: Shift+o = ö, Shift+g = ğ, Shift+s = ş, Shift+c = ç
-// Katta harflar: AltGr+o = O, AltGr+Shift+o = Ö
+    "a": """// Asosiy Tartib (Variant A):
+// [ -> ğ, ] -> ö, ; -> ş, ' -> ç
 default partial alphanumeric_keys
 xkb_symbols "latin" {
     include "us(basic)"
-    name[Group1] = "Uzbek (New Latin, Shift Mode)";
+    name[Group1] = "Uzbek (New Latin, Variant A - Primary)";
 
     include "level3(ralt_switch)"
 
-    key <AD09> { [ o, odiaeresis, O, Odiaeresis ] };
-    key <AC05> { [ g, gbreve,     G, Gbreve     ] };
-    key <AC02> { [ s, scedilla,   S, Scedilla   ] };
-    key <AB03> { [ c, ccedilla,   C, Ccedilla   ] };
-    key <AC11> { [ apostrophe, quotedbl, U02BB, U02BC ] };
+    // [ key (AD11): ğ, Ğ, [, {
+    key <AD11> { [ gbreve,     Gbreve,     bracketleft,  braceleft  ] };
+
+    // ] key (AD12): ö, Ö, ], }
+    key <AD12> { [ odiaeresis, Odiaeresis, bracketright, braceright ] };
+
+    // ; key (AC10): ş, Ş, ;, :
+    key <AC10> { [ scedilla,   Scedilla,   semicolon,    colon      ] };
+
+    // ' key (AC11): ç, Ç, ', "
+    key <AC11> { [ ccedilla,   Ccedilla,   apostrophe,   quotedbl   ] };
+
+    // Qo'shimcha qulaylik: AltGr orqali ham ishlashi:
+    key <AD09> { [ o, O, odiaeresis, Odiaeresis ] };
+    key <AC05> { [ g, G, gbreve,     Gbreve     ] };
+    key <AC02> { [ s, S, scedilla,   Scedilla   ] };
+    key <AB03> { [ c, C, ccedilla,   Ccedilla   ] };
+
+    // Tutuq belgisi (ʻ / ʼ):
+    key <TLDE> { [ grave, asciitilde, U02BB, U02BC ] };
+    key <BKSL> { [ backslash, bar, U02BB, U02BC ] };
 };
 """,
     "altgr": """// AltGr Mode: Oddiy Shift+o = O, AltGr+o = ö, AltGr+Shift+o = Ö
@@ -46,16 +62,19 @@ xkb_symbols "latin" {
     key <AC11> { [ apostrophe, quotedbl, U02BB, U02BC ] };
 };
 """,
-    "turkish": """// Turkish Q Style: [ -> ğ, ] -> ö, ; -> ş, ' -> ç
+    "shift": """// Shift Mode: Shift+o = ö, Shift+g = ğ, Shift+s = ş, Shift+c = ç
 default partial alphanumeric_keys
 xkb_symbols "latin" {
     include "us(basic)"
-    name[Group1] = "Uzbek (New Latin, Turkish Style)";
+    name[Group1] = "Uzbek (New Latin, Shift Mode)";
 
-    key <AD11> { [ gbreve,   Gbreve,   bracketleft, braceleft ] };
-    key <AD12> { [ odiaeresis, Odiaeresis, bracketright, braceright ] };
-    key <AC10> { [ scedilla, Scedilla, semicolon, colon ] };
-    key <AC11> { [ ccedilla, Ccedilla, apostrophe, quotedbl ] };
+    include "level3(ralt_switch)"
+
+    key <AD09> { [ o, odiaeresis, O, Odiaeresis ] };
+    key <AC05> { [ g, gbreve,     G, Gbreve     ] };
+    key <AC02> { [ s, scedilla,   S, Scedilla   ] };
+    key <AB03> { [ c, ccedilla,   C, Ccedilla   ] };
+    key <AC11> { [ apostrophe, quotedbl, U02BB, U02BC ] };
 };
 """
 }
@@ -87,8 +106,8 @@ def detect_current_mode():
     try:
         with open(XKB_UZ_FILE, "r", encoding="utf-8") as f:
             content = f.read()
-        if "Turkish Style" in content or "AD11" in content:
-            return "turkish"
+        if "Variant A" in content or "AD11" in content:
+            return "a (Asosiy / Qavslar)"
         elif "AltGr Mode" in content:
             return "altgr"
         elif "Shift Mode" in content:
@@ -108,13 +127,15 @@ def cmd_status(args):
     if mode:
         print(f"Hozirgi rejim:   \033[1;32m{mode.upper()}\033[0m")
     print(f"GNOME tillari:   {sources}")
-    print(f"GNOMEda faolmi:  {'\033[1;32m✓ Ha (uz+latin mavjud)\033[0m' if is_in_gnome else '\033[1;31m✗ Faol emas\033[0m'}")
+    print(f"GNOMEda faolmi:  {'\033[1;32m✓ Ha (uz+latin ulangan)\033[0m' if is_in_gnome else '\033[1;31m✗ Faol emas\033[0m'}")
     print("\nTilni almashtirish tugmasi: \033[1;33mSuper (Win) + Space\033[0m\n")
 
 def cmd_setup(args):
     mode = args.mode.lower()
+    if mode in ["a", "primary", "turkish", "brackets"]:
+        mode = "a"
     if mode not in LAYOUT_TEMPLATES:
-        print(f"Noma'lum rejim: {mode}. Tanlovlar: shift, altgr, turkish")
+        print(f"Noma'lum rejim: {mode}. Tanlovlar: a, altgr, shift")
         sys.exit(1)
 
     os.makedirs(XKB_SYMBOLS_DIR, exist_ok=True)
@@ -123,16 +144,18 @@ def cmd_setup(args):
     print(f"\033[1;32m✓ {mode.upper()} rejimi faylga yozildi: {XKB_UZ_FILE}\033[0m")
 
     sources = get_gnome_sources()
-    if ("xkb", "uz+latin") not in sources:
-        sources.append(("xkb", "uz+latin"))
-        set_gnome_sources(sources)
-        print("\033[1;32m✓ GNOME klaviatura tillariga 'Uzbek (Latin)' muvaffaqiyatli qo'shildi!\033[0m")
-    else:
-        # Trigger reload
-        set_gnome_sources(sources)
-        print("\033[1;32m✓ GNOME sozlamalari yangilandi!\033[0m")
+    # uz+latin ni birinchi o'ringa qo'yamiz
+    sources = [s for s in sources if s not in [("xkb", "uz+latin"), ("xkb", "uz")]]
+    sources.insert(0, ("xkb", "uz+latin"))
+    if ("xkb", "us") not in sources:
+        sources.append(("xkb", "us"))
+    if ("xkb", "ru") not in sources:
+        sources.append(("xkb", "ru"))
 
-    print("\n\033[1;33mKlaviaturani yoqish uchun: Super (Win) + Space tugmalarini bosing.\033[0m\n")
+    set_gnome_sources(sources)
+    subprocess.run(["gsettings", "set", "org.gnome.desktop.input-sources", "current", "0"], stderr=subprocess.DEVNULL)
+    print("\033[1;32m✓ GNOME klaviaturasida 'Uzbek (Latin)' birlamchi qilib faollashtirildi!\033[0m")
+    print("\n\033[1;33mEndi [ va ] tugmalarini bosib ko'ring: [ = ğ, ] = ö, ; = ş, ' = ç\033[0m\n")
 
 def cmd_switch(args):
     cmd_setup(args)
@@ -140,54 +163,42 @@ def cmd_switch(args):
 def cmd_info(args):
     print("""
 \033[1;36m=============================================================================
-                O'ZBEK TILI YANGI ALIFBOSI KLAVIATURA XARITASI
+                O'ZBEK TILI YANGI ALIFBOSI KLAVIATURA XARITASI (VARIANT A)
 =============================================================================\033[0m
 
-1) \033[1mSHIFT REJIMI\033[0m (Foydalanuvchi so'ragan rejim):
-   -------------------------------------------------------------------------
-   Tugma            Natija          Katta Harf (AltGr)    Katta Harf (AltGr+Shift)
-   -------------------------------------------------------------------------
-   Shift + o   -->  \033[1;32mö\033[0m               AltGr + o   --> \033[1mO\033[0m     AltGr + Shift + o   --> \033[1;32mÖ\033[0m
-   Shift + g   -->  \033[1;32mğ\033[0m               AltGr + g   --> \033[1mG\033[0m     AltGr + Shift + g   --> \033[1;32mĞ\033[0m
-   Shift + s   -->  \033[1;32mş\033[0m               AltGr + s   --> \033[1mS\033[0m     AltGr + Shift + s   --> \033[1;32mŞ\033[0m
-   Shift + c   -->  \033[1;32mç\033[0m               AltGr + c   --> \033[1mC\033[0m     AltGr + Shift + c   --> \033[1;32mÇ\033[0m
-   AltGr + '   -->  \033[1;32mʻ\033[0m (Tutuq)       AltGr + Shift + ' --> \033[1;32mʼ\033[0m
+\033[1mASOSIY REJIM (VARIANT A)\033[0m — Bitta tugma orqali qulay yozish:
+-----------------------------------------------------------------------------
+Tugma             Kichik Harf       Shift bilan       AltGr bilan (Original)
+-----------------------------------------------------------------------------
+[ (P yonida)  -->   \033[1;32mğ\033[0m             Shift+[  --> \033[1;32mĞ\033[0m     AltGr+[  --> [   ({)
+] (Qavs yopiq)-->   \033[1;32mö\033[0m             Shift+]  --> \033[1;32mÖ\033[0m     AltGr+]  --> ]   (})
+; (L yonida)  -->   \033[1;32mş\033[0m             Shift+;  --> \033[1;32mŞ\033[0m     AltGr+;  --> ;   (:)
+' (Apostrof)  -->   \033[1;32mç\033[0m             Shift+'  --> \033[1;32mÇ\033[0m     AltGr+'  --> '   (")
 
-2) \033[1mALTGR REJIMI\033[0m (Standart xalqaro usul):
-   -------------------------------------------------------------------------
-   Tugma            Kichik Harf                         Katta Harf
-   -------------------------------------------------------------------------
-   AltGr + o   -->  \033[1;32mö\033[0m               AltGr + Shift + o   --> \033[1;32mÖ\033[0m (Shift+o oddiy 'O')
-   AltGr + g   -->  \033[1;32mğ\033[0m               AltGr + Shift + g   --> \033[1;32mĞ\033[0m (Shift+g oddiy 'G')
-   AltGr + s   -->  \033[1;32mş\033[0m               AltGr + Shift + s   --> \033[1;32mŞ\033[0m (Shift+s oddiy 'S')
-   AltGr + c   -->  \033[1;32mç\033[0m               AltGr + Shift + c   --> \033[1;32mÇ\033[0m (Shift+c oddiy 'C')
-   AltGr + '   -->  \033[1;32mʻ\033[0m (Tutuq)       AltGr + Shift + ' --> \033[1;32mʼ\033[0m
+Tutuq belgisi:
+~ (Tilda)     -->   `             Shift+~  --> ~     AltGr+~  --> \033[1;32mʻ\033[0m (Tutuq)
 
-3) \033[1mTURKISH Q REJIMI\033[0m (Maxsus tugmalar):
-   -------------------------------------------------------------------------
-   [  -->  \033[1;32mğ\033[0m  |  {  -->  \033[1;32mĞ\033[0m
-   ]  -->  \033[1;32mö\033[0m  |  }  -->  \033[1;32mÖ\033[0m
-   ;  -->  \033[1;32mş\033[0m  |  :  -->  \033[1;32mŞ\033[0m
-   '  -->  \033[1;32mç\033[0m  |  "  -->  \033[1;32mÇ\033[0m
+Barcha inglizcha harflar (A-Z) va ularning Shift bilan katta bo'lishi (Shift+O = O)
+100% o'zgarishsiz saqlangan!
 \033[1;36m=============================================================================\033[0m
 """)
 
 def cmd_test(args):
     print("\n\033[1;33mKlaviaturani jonli sinash (Test rejimi):\033[0m")
-    print("Klaviaturangizda yangi harflarni yozib ko'ring (ö, ğ, ş, ç, ʻ):")
+    print("Klaviaturangizda [, ], ;, ' tugmalarini bosib ko'ring:")
+    print("  [ -> ğ  |  ] -> ö  |  ; -> ş  |  ' -> ç")
     print("Chiqish uchun \033[1mCtrl + C\033[0m bosing.\n")
     try:
         while True:
             line = input("Matn kiriting > ")
             print(f"Kiritildi: {line}")
-            # Highlight Uzbek new letters
             highlighted = ""
             for ch in line:
                 if ch in "öÖğĞşŞçÇʻʼ":
                     highlighted += f"\033[1;32m{ch}\033[0m"
                 else:
                     highlighted += ch
-            print(f"Tahlil:    {highlighted}\n")
+            print(f"Yangi harflar: {highlighted}\n")
     except (KeyboardInterrupt, EOFError):
         print("\nTest yakunlandi.")
 
@@ -201,12 +212,12 @@ def main():
     p_status.set_defaults(func=cmd_status)
 
     p_setup = subparsers.add_parser("setup", help="Klaviaturani o'rnatish")
-    p_setup.add_argument("--mode", default="shift", choices=["shift", "altgr", "turkish"],
-                         help="Rejimni tanlash (standart: shift)")
+    p_setup.add_argument("--mode", default="a", choices=["a", "altgr", "shift"],
+                         help="Rejimni tanlash (standart: a)")
     p_setup.set_defaults(func=cmd_setup)
 
-    p_switch = subparsers.add_parser("switch", help="Rejimni o'zgartirish (shift/altgr/turkish)")
-    p_switch.add_argument("mode", choices=["shift", "altgr", "turkish"], help="Yangi rejim")
+    p_switch = subparsers.add_parser("switch", help="Rejimni o'zgartirish (a/altgr/shift)")
+    p_switch.add_argument("mode", choices=["a", "altgr", "shift"], help="Yangi rejim")
     p_switch.set_defaults(func=cmd_switch)
 
     p_info = subparsers.add_parser("info", help="Tugmalar xaritasini ko'rsatish")

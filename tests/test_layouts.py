@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Unit tests for Uzbek New Latin Keyboard Layouts
+Unit tests for Uzbek New Latin Keyboard Layouts (Variant A)
 """
 
 import unittest
@@ -26,10 +26,9 @@ class TestUzbekLayout(unittest.TestCase):
         if not self.xkbcli:
             self.skipTest("xkbcli topilmadi, test o'tkazib yuborildi")
 
-        variants = ["latin", "latin_altgr", "latin_turkish"]
+        variants = ["latin", "latin_altgr", "latin_shift"]
         for variant in variants:
             with self.subTest(variant=variant):
-                # Test compile with xkbcli
                 cmd = [
                     self.xkbcli, "compile-keymap" if "libexec" not in self.xkbcli else "",
                     "--include", os.path.join(self.repo_dir),
@@ -42,7 +41,7 @@ class TestUzbekLayout(unittest.TestCase):
                 res = subprocess.run(cmd, capture_output=True, text=True)
                 self.assertEqual(res.returncode, 0, f"Variant {variant} kompilatsiya qilinmadi:\n{res.stderr}")
 
-    def test_shift_mode_keysyms(self):
+    def test_variant_a_keysyms(self):
         if not self.xkbcli:
             self.skipTest("xkbcli topilmadi")
 
@@ -58,11 +57,12 @@ class TestUzbekLayout(unittest.TestCase):
         self.assertEqual(res.returncode, 0)
         output = res.stdout
 
-        # Verify key definitions
-        self.assertIn("odiaeresis", output, "Shift+o -> ö bo'lishi kerak")
-        self.assertIn("gbreve", output, "Shift+g -> ğ bo'lishi kerak")
-        self.assertIn("scedilla", output, "Shift+s -> ş bo'lishi kerak")
-        self.assertIn("ccedilla", output, "Shift+c -> ç bo'lishi kerak")
+        # Verify key definitions on brackets and semicolons
+        self.assertIn("key <AD11>", output, "AD11 ([) mavjud bo'lishi kerak")
+        self.assertIn("gbreve", output, "[ -> ğ bo'lishi kerak")
+        self.assertIn("odiaeresis", output, "] -> ö bo'lishi kerak")
+        self.assertIn("scedilla", output, "; -> ş bo'lishi kerak")
+        self.assertIn("ccedilla", output, "' -> ç bo'lishi kerak")
 
 if __name__ == "__main__":
     unittest.main()

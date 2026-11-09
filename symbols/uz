@@ -1,40 +1,46 @@
 // =========================================================================
 // O'zbek Tili Yangi Lotin Alifbosi Klaviaturasi
-// Uzbek New Latin Alphabet Keyboard Layout (2021/2023 Reform)
+// Uzbek New Latin Keyboard Layout (2021/2023 Reform)
 //
-// Harflar / Letters:
-//   o' -> ö / Ö
-//   g' -> ğ / Ğ
-//   sh -> ş / Ş
-//   ch -> ç / Ç
-//   tutuq belgisi -> ʻ / ʼ
+// Asosiy Tartib (Variant A - Qavslar va tinish belgilari o'rnida):
+//   [ -> ğ  |  Shift+[ -> Ğ  |  AltGr+[ -> [  |  AltGr+Shift+[ -> {
+//   ] -> ö  |  Shift+] -> Ö  |  AltGr+] -> ]  |  AltGr+Shift+] -> }
+//   ; -> ş  |  Shift+; -> Ş  |  AltGr+; -> ;  |  AltGr+Shift+; -> :
+//   ' -> ç  |  Shift+' -> Ç  |  AltGr+' -> '  |  AltGr+Shift+' -> "
+//   ~ -> ʻ  (O'zbek tutuq belgisi)
 // =========================================================================
 
-// Variant 1: Shift Mode (Foydalanuvchi so'ragan rejim)
-// Shift+o = ö, Shift+g = ğ, Shift+s = ş, Shift+c = ç
-// Katta harflar uchun: AltGr+o = O, AltGr+Shift+o = Ö
 default partial alphanumeric_keys
 xkb_symbols "latin" {
     include "us(basic)"
-    name[Group1] = "Uzbek (New Latin, Shift Mode)";
+    name[Group1] = "Uzbek (New Latin, Variant A - Primary)";
 
     include "level3(ralt_switch)"
 
-    // AD09 = O key
-    key <AD09> { [ o, odiaeresis, O, Odiaeresis ] };
-    // AC05 = G key
-    key <AC05> { [ g, gbreve,     G, Gbreve     ] };
-    // AC02 = S key
-    key <AC02> { [ s, scedilla,   S, Scedilla   ] };
-    // AB03 = C key
-    key <AB03> { [ c, ccedilla,   C, Ccedilla   ] };
+    // [ key (AD11): ğ, Ğ, [, {
+    key <AD11> { [ gbreve,     Gbreve,     bracketleft,  braceleft  ] };
 
-    // AC11 = Apostrophe / Tutuq belgisi (ʻ / ʼ)
-    key <AC11> { [ apostrophe, quotedbl, U02BB, U02BC ] };
+    // ] key (AD12): ö, Ö, ], }
+    key <AD12> { [ odiaeresis, Odiaeresis, bracketright, braceright ] };
+
+    // ; key (AC10): ş, Ş, ;, :
+    key <AC10> { [ scedilla,   Scedilla,   semicolon,    colon      ] };
+
+    // ' key (AC11): ç, Ç, ', "
+    key <AC11> { [ ccedilla,   Ccedilla,   apostrophe,   quotedbl   ] };
+
+    // Qo'shimcha qulaylik: AltGr orqali ham yangi harflarni yozish imkoniyati:
+    key <AD09> { [ o, O, odiaeresis, Odiaeresis ] };
+    key <AC05> { [ g, G, gbreve,     Gbreve     ] };
+    key <AC02> { [ s, S, scedilla,   Scedilla   ] };
+    key <AB03> { [ c, C, ccedilla,   Ccedilla   ] };
+
+    // Tutuq belgisi (ʻ / ʼ):
+    key <TLDE> { [ grave, asciitilde, U02BB, U02BC ] };
+    key <BKSL> { [ backslash, bar, U02BB, U02BC ] };
 };
 
-// Variant 2: AltGr Mode (Xalqaro standart rejim)
-// Oddiy Shift+o = O, AltGr+o = ö, AltGr+Shift+o = Ö
+// Variant 2: AltGr Mode
 partial alphanumeric_keys
 xkb_symbols "latin_altgr" {
     include "us(basic)"
@@ -42,28 +48,26 @@ xkb_symbols "latin_altgr" {
 
     include "level3(ralt_switch)"
 
-    // AD09 = O key: o, O, ö, Ö
     key <AD09> { [ o, O, odiaeresis, Odiaeresis ] };
-    // AC05 = G key: g, G, ğ, Ğ
     key <AC05> { [ g, G, gbreve,     Gbreve     ] };
-    // AC02 = S key: s, S, scedilla,   Scedilla   ] };
     key <AC02> { [ s, S, scedilla,   Scedilla   ] };
-    // AB03 = C key: c, C, ccedilla,   Ccedilla   ] };
     key <AB03> { [ c, C, ccedilla,   Ccedilla   ] };
 
-    // AC11 = Apostrophe / Tutuq belgisi
     key <AC11> { [ apostrophe, quotedbl, U02BB, U02BC ] };
 };
 
-// Variant 3: Turkish Q Style (Maxsus tugmalar)
-// [ -> ğ, ] -> ö, ; -> ş, ' -> ç
+// Variant 3: Shift Mode
 partial alphanumeric_keys
-xkb_symbols "latin_turkish" {
+xkb_symbols "latin_shift" {
     include "us(basic)"
-    name[Group1] = "Uzbek (New Latin, Turkish Q Style)";
+    name[Group1] = "Uzbek (New Latin, Shift Mode)";
 
-    key <AD11> { [ gbreve,   Gbreve,   bracketleft, braceleft ] };
-    key <AD12> { [ odiaeresis, Odiaeresis, bracketright, braceright ] };
-    key <AC10> { [ scedilla, Scedilla, semicolon, colon ] };
-    key <AC11> { [ ccedilla, Ccedilla, apostrophe, quotedbl ] };
+    include "level3(ralt_switch)"
+
+    key <AD09> { [ o, odiaeresis, O, Odiaeresis ] };
+    key <AC05> { [ g, gbreve,     G, Gbreve     ] };
+    key <AC02> { [ s, scedilla,   S, Scedilla   ] };
+    key <AB03> { [ c, ccedilla,   C, Ccedilla   ] };
+
+    key <AC11> { [ apostrophe, quotedbl, U02BB, U02BC ] };
 };

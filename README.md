@@ -9,7 +9,7 @@
 
 O'zbek tilining yangilangan lotin alifbosidagi yangi harflarni (**ö, ğ, ş, ç** va tutuq belgisi **ʻ**) oddiy kompyuter klaviaturasida oson, tez va xavfsiz yozish uchun maxsus klaviatura maketi va boshqaruv dasturi.
 
-> 📖 **To'liq qo'llanma (3 tilda): [FOYDALANISH.md](FOYDALANISH.md)**  
+> 📖 **To'liq foydalanish qo'llanmasi (3 tilda): [FOYDALANISH.md](FOYDALANISH.md)**  
 > *(O'zbekcha, English, Русский)*
 
 ---
@@ -26,62 +26,36 @@ O'zbek tilining yangilangan lotin alifbosidagi yangi harflarni (**ö, ğ, ş, ç
 
 ---
 
-## ⚡ Mavjud Rejimlar (Modes)
+## ⚡ Asosiy Rejim (Variant A - Qavslar va tinish belgilari o'rnida)
 
-Dastur sizning xohishingizga ko'ra **3 xil rejimda** ishlay oladi:
+Dunyoda va turkiy tilli davlatlarda (Turkiya, Ozarbayjon) eng keng tarqalgan va qulay usul:
+Klaviaturadagi kam ishlatiladigan tugmalar yangi harflarga ajratilgan:
 
-### 1️⃣ Shift Rejimi (Standart sozlama)
-Klaviaturadagi eng tezkor usul:
-* `Shift + o` ➔ **ö**
-* `Shift + g` ➔ **ğ**
-* `Shift + s` ➔ **ş**
-* `Shift + c` ➔ **ç**
+| Klaviaturadagi Tugma | Bosganda (Kichik) | Shift bilan (Katta) | AltGr bilan (Original belgi) |
+|:---:|:---:|:---:|:---:|
+| **`[`** (P harfi o'ngida) | **ğ** | **Ğ** | `[` &nbsp; (Shift bilan: `{`) |
+| **`]`** (Qavs yopish) | **ö** | **Ö** | `]` &nbsp; (Shift bilan: `}`) |
+| **`;`** (L harfi o'ngida) | **ş** | **Ş** | `;` &nbsp; (Shift bilan: `:`) |
+| **`'`** (Apostrof) | **ç** | **Ç** | `'` &nbsp; (Shift bilan: `"`) |
+| **`~`** (Tilda / Esc ostida) | `` ` `` | `~` | **ʻ** (O'zbek tutuq belgisi, `U+02BB`) |
 
-> **Katta harflar qanday yoziladi?**
-> * `O'ng Alt + o` ➔ **O** &nbsp;|&nbsp; `O'ng Alt + Shift + o` ➔ **Ö**
-> * `O'ng Alt + g` ➔ **G** &nbsp;|&nbsp; `O'ng Alt + Shift + g` ➔ **Ğ**
-> * `O'ng Alt + s` ➔ **S** &nbsp;|&nbsp; `O'ng Alt + Shift + s` ➔ **Ş**
-> * `O'ng Alt + c` ➔ **C** &nbsp;|&nbsp; `O'ng Alt + Shift + c` ➔ **Ç**
-> * `O'ng Alt + '` ➔ **ʻ** (To'g'ri o'zbek tutuq belgisi)
-
----
-
-### 2️⃣ AltGr Rejimi (Xalqaro standart)
-Oddiy katta **O, G, S, C** harflarini o'zgartirmasdan, qo'shimcha harflarni o'ng Alt (`AltGr`) orqali yozish:
-* `O'ng Alt + o` ➔ **ö** &nbsp;|&nbsp; `O'ng Alt + Shift + o` ➔ **Ö**
-* `O'ng Alt + g` ➔ **ğ** &nbsp;|&nbsp; `O'ng Alt + Shift + g` ➔ **Ğ**
-* `O'ng Alt + s` ➔ **ş** &nbsp;|&nbsp; `O'ng Alt + Shift + s` ➔ **Ş**
-* `O'ng Alt + c` ➔ **ç** &nbsp;|&nbsp; `O'ng Alt + Shift + c` ➔ **Ç**
-* `O'ng Alt + '` ➔ **ʻ**
-
----
-
-### 3️⃣ Turkish Q Rejimi (Maxsus tugmalar)
-Qavslar va tinish belgilari o'rnida yangi harflar joylashadi:
-* `[` ➔ **ğ** &nbsp;|&nbsp; `{` ➔ **Ğ**
-* `]` ➔ **ö** &nbsp;|&nbsp; `}` ➔ **Ö**
-* `;` ➔ **ş** &nbsp;|&nbsp; `:` ➔ **Ş**
-* `'` ➔ **ç** &nbsp;|&nbsp; `"` ➔ **Ç**
+### Nega bu usul eng qulay?
+1. **Bitta tugma:** Yangi harf yozish uchun hech qanday 2 ta tugmani baravar bosish shart emas.
+2. **Katta harflar buzilmaydi:** `Shift + o` oddiy katta **O**, `Shift + g` katta **G** bo'lib qoladi.
+3. **Inglizcha QWERTY to'liq saqlanadi:** Barcha asosiy harflar (a-z, A-Z) va raqamlar (0-9) o'z joyida.
 
 ---
 
 ## 🚀 O'rnatish (Installation)
 
-### 1-usul: Foydalanuvchi darajasida (Sudo / Parol talab qilinmaydi!) - TAVSIYA ETILADI
-Terminalda quyidagi bitta buyruqni bering:
-
+### 1-usul: Sudo-siz tezkor o'rnatish (Tavsiya etiladi)
 ```bash
 git clone https://github.com/Azizbek6002/new_uzb_keyboard_for_linux.git
 cd new_uzb_keyboard_for_linux
 ./setup.sh
 ```
 
-Yoki AltGr rejimida o'rnatish uchun:
-```bash
-./setup.sh altgr
-```
-
-### 2-usul: Butun tizim (System-wide) uchun o'rnatish
+### 2-usul: Butun tizim uchun o'rnatish
 ```bash
 sudo ./install.sh
 ```
@@ -90,19 +64,16 @@ sudo ./install.sh
 
 ## ⌨️ Qanday Ishlatiladi?
 
-1. O'rnatgandan so'ng klaviatura tilini almashtirish uchun:
-   **`Super (Windows tugmasi) + Space (Bo'sh joy)`** tugmalarini bosing.
-2. Yuqori o'ng burchakda **`uz`** tili paydo bo'ladi.
-3. Yangi harflarni xohlagan dasturda (Brauzer, Telegram, VS Code, Word, Terminal va boshqalar) bemalol yozaverasiz!
+O'rnatgandan so'ng klaviatura avtomatik faollashadi. Tilni almashtirish uchun:
+**`Super (Windows tugmasi) + Space (Probel)`** tugmalarini bosing.
 
 ---
 
 ## 🛡 Xavfsizlik va Maxfiylik
 
-Ushbu dastur xavfsizlikka eng yuqori darajada e'tibor qaratgan holda ishlab chiqilgan:
-1. **0% Keylogger xavfi:** Dastur klaviatura tugmalarini tinglab turuvchi hech qanday fon jarayoni (daemon / background process) ishlatmaydi.
-2. **Linux Native XKB:** Barcha harflar Linux yadrosi va GNOME/Wayland serverining rasmiy XKB mexanizmi orqali ishlaydi.
-3. **100% Shaffof Kod:** Barcha skriptlar ochiq, hech qanday yopiq binar fayllarsiz yoki tashqi kutubxonalarsiz ishlaydi.
+1. **0% Keylogger xavfi:** Hech qanday klaviatura tinglovchi fon jarayoni (daemon) ishlamaydi.
+2. **Linux Native XKB:** Linux yadrosi va GNOME/Wayland serverining rasmiy xavfsiz standartida ishlaydi.
+3. **100% Shaffof Kod:** To'liq ochiq manbali va tekshirish oson.
 
 ---
 
@@ -112,39 +83,19 @@ Ushbu dastur xavfsizlikka eng yuqori darajada e'tibor qaratgan holda ishlab chiq
 # Holatni tekshirish
 python3 uzkey.py status
 
-# Rejimni o'zgartirish (shift, altgr yoki turkish)
-python3 uzkey.py switch altgr
-python3 uzkey.py switch shift
-
-# Jonli yozib sinab ko'rish (Test rejimi)
+# Jonli sinab ko'rish
 python3 uzkey.py test
 
 # Tugmalar xaritasini ko'rish
 python3 uzkey.py info
-```
 
----
-
-## 🧪 Testlarni Ishga Tushirish
-
-Klaviaturaning to'g'ri sozlanganligi va kompilatsiyasini tekshirish:
-
-```bash
-python3 tests/test_layouts.py
-```
-
----
-
-## 🗑 O'chirish (Uninstall)
-
-Klaviaturani tizimdan butunlay olib tashlash:
-
-```bash
-./uninstall.sh
+# Agar kelgusida boshqa rejimga o'tmoqchi bo'lsangiz:
+python3 uzkey.py switch a       # Asosiy Variant A ([ = ğ, ] = ö, ; = ş, ' = ç)
+python3 uzkey.py switch altgr   # AltGr rejimi (AltGr + o = ö)
+python3 uzkey.py switch shift   # Shift rejimi
 ```
 
 ---
 
 ## 📄 Litsenziya
-
-Ushbu loyiha [MIT Litsenziyasi](LICENSE) asosida ochiq manbali tarzda tarqatiladi.
+[MIT Litsenziyasi](LICENSE) asosida ochiq tarqatiladi.
