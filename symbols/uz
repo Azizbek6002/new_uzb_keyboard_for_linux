@@ -1,0 +1,69 @@
+// =========================================================================
+// O'zbek Tili Yangi Lotin Alifbosi Klaviaturasi
+// Uzbek New Latin Alphabet Keyboard Layout (2021/2023 Reform)
+//
+// Harflar / Letters:
+//   o' -> ö / Ö
+//   g' -> ğ / Ğ
+//   sh -> ş / Ş
+//   ch -> ç / Ç
+//   tutuq belgisi -> ʻ / ʼ
+// =========================================================================
+
+// Variant 1: Shift Mode (Foydalanuvchi so'ragan rejim)
+// Shift+o = ö, Shift+g = ğ, Shift+s = ş, Shift+c = ç
+// Katta harflar uchun: AltGr+o = O, AltGr+Shift+o = Ö
+default partial alphanumeric_keys
+xkb_symbols "latin" {
+    include "us(basic)"
+    name[Group1] = "Uzbek (New Latin, Shift Mode)";
+
+    include "level3(ralt_switch)"
+
+    // AD09 = O key
+    key <AD09> { [ o, odiaeresis, O, Odiaeresis ] };
+    // AC05 = G key
+    key <AC05> { [ g, gbreve,     G, Gbreve     ] };
+    // AC02 = S key
+    key <AC02> { [ s, scedilla,   S, Scedilla   ] };
+    // AB03 = C key
+    key <AB03> { [ c, ccedilla,   C, Ccedilla   ] };
+
+    // AC11 = Apostrophe / Tutuq belgisi (ʻ / ʼ)
+    key <AC11> { [ apostrophe, quotedbl, U02BB, U02BC ] };
+};
+
+// Variant 2: AltGr Mode (Xalqaro standart rejim)
+// Oddiy Shift+o = O, AltGr+o = ö, AltGr+Shift+o = Ö
+partial alphanumeric_keys
+xkb_symbols "latin_altgr" {
+    include "us(basic)"
+    name[Group1] = "Uzbek (New Latin, AltGr Mode)";
+
+    include "level3(ralt_switch)"
+
+    // AD09 = O key: o, O, ö, Ö
+    key <AD09> { [ o, O, odiaeresis, Odiaeresis ] };
+    // AC05 = G key: g, G, ğ, Ğ
+    key <AC05> { [ g, G, gbreve,     Gbreve     ] };
+    // AC02 = S key: s, S, scedilla,   Scedilla   ] };
+    key <AC02> { [ s, S, scedilla,   Scedilla   ] };
+    // AB03 = C key: c, C, ccedilla,   Ccedilla   ] };
+    key <AB03> { [ c, C, ccedilla,   Ccedilla   ] };
+
+    // AC11 = Apostrophe / Tutuq belgisi
+    key <AC11> { [ apostrophe, quotedbl, U02BB, U02BC ] };
+};
+
+// Variant 3: Turkish Q Style (Maxsus tugmalar)
+// [ -> ğ, ] -> ö, ; -> ş, ' -> ç
+partial alphanumeric_keys
+xkb_symbols "latin_turkish" {
+    include "us(basic)"
+    name[Group1] = "Uzbek (New Latin, Turkish Q Style)";
+
+    key <AD11> { [ gbreve,   Gbreve,   bracketleft, braceleft ] };
+    key <AD12> { [ odiaeresis, Odiaeresis, bracketright, braceright ] };
+    key <AC10> { [ scedilla, Scedilla, semicolon, colon ] };
+    key <AC11> { [ ccedilla, Ccedilla, apostrophe, quotedbl ] };
+};
