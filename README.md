@@ -1,12 +1,16 @@
-# 🇺🇿 O'zbek Tili Yangi Lotin Alifbosi Klaviaturasi (Uzbek New Latin Keyboard Layout)
+# 🇺🇿 O'zbek Tili Yangi Lotin Alifbosi Klaviaturasi (`new_uzb_keyboard_for_linux`)
 
 [![Linux](https://img.shields.io/badge/Platform-Linux%20%7C%20Ubuntu-orange.svg)](https://ubuntu.com)
 [![XKB](https://img.shields.io/badge/Layout-XKB%20Native-blue.svg)](https://www.x.org/wiki/XKB/)
 [![Wayland / X11](https://img.shields.io/badge/Display-Wayland%20%2F%20X11-green.svg)](https://wayland.freedesktop.org/)
+[![Security: Audited](https://img.shields.io/badge/Security-Safe%20%26%20Keylogger--Free-success.svg)](#-xavfsizlik-va-maxfiylik)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3](https://img.shields.io/badge/Python-3.8+-brightgreen.svg)](https://python.org)
 
-O'zbek tilining yangilangan lotin alifbosidagi yangi harflarni (**ö, ğ, ş, ç** va tutuq belgisi **ʻ**) oddiy kompyuter klaviaturasida oson, tez va qulay yozish uchun maxsus klaviatura maketi va boshqaruv dasturi.
+O'zbek tilining yangilangan lotin alifbosidagi yangi harflarni (**ö, ğ, ş, ç** va tutuq belgisi **ʻ**) oddiy kompyuter klaviaturasida oson, tez va xavfsiz yozish uchun maxsus klaviatura maketi va boshqaruv dasturi.
+
+> 📖 **To'liq qo'llanma (3 tilda): [FOYDALANISH.md](FOYDALANISH.md)**  
+> *(O'zbekcha, English, Русский)*
 
 ---
 
@@ -34,30 +38,30 @@ Klaviaturadagi eng tezkor usul:
 * `Shift + c` ➔ **ç**
 
 > **Katta harflar qanday yoziladi?**
-> * `O'ng Alt + o` ➔ **O** | `O'ng Alt + Shift + o` ➔ **Ö**
-> * `O'ng Alt + g` ➔ **G** | `O'ng Alt + Shift + g` ➔ **Ğ**
-> * `O'ng Alt + s` ➔ **S** | `O'ng Alt + Shift + s` ➔ **Ş**
-> * `O'ng Alt + c` ➔ **C** | `O'ng Alt + Shift + c` ➔ **Ç**
+> * `O'ng Alt + o` ➔ **O** &nbsp;|&nbsp; `O'ng Alt + Shift + o` ➔ **Ö**
+> * `O'ng Alt + g` ➔ **G** &nbsp;|&nbsp; `O'ng Alt + Shift + g` ➔ **Ğ**
+> * `O'ng Alt + s` ➔ **S** &nbsp;|&nbsp; `O'ng Alt + Shift + s` ➔ **Ş**
+> * `O'ng Alt + c` ➔ **C** &nbsp;|&nbsp; `O'ng Alt + Shift + c` ➔ **Ç**
 > * `O'ng Alt + '` ➔ **ʻ** (To'g'ri o'zbek tutuq belgisi)
 
 ---
 
 ### 2️⃣ AltGr Rejimi (Xalqaro standart)
 Oddiy katta **O, G, S, C** harflarini o'zgartirmasdan, qo'shimcha harflarni o'ng Alt (`AltGr`) orqali yozish:
-* `O'ng Alt + o` ➔ **ö** | `O'ng Alt + Shift + o` ➔ **Ö**
-* `O'ng Alt + g` ➔ **ğ** | `O'ng Alt + Shift + g` ➔ **Ğ**
-* `O'ng Alt + s` ➔ **ş** | `O'ng Alt + Shift + s` ➔ **Ş**
-* `O'ng Alt + c` ➔ **ç** | `O'ng Alt + Shift + c` ➔ **Ç**
+* `O'ng Alt + o` ➔ **ö** &nbsp;|&nbsp; `O'ng Alt + Shift + o` ➔ **Ö**
+* `O'ng Alt + g` ➔ **ğ** &nbsp;|&nbsp; `O'ng Alt + Shift + g` ➔ **Ğ**
+* `O'ng Alt + s` ➔ **ş** &nbsp;|&nbsp; `O'ng Alt + Shift + s` ➔ **Ş**
+* `O'ng Alt + c` ➔ **ç** &nbsp;|&nbsp; `O'ng Alt + Shift + c` ➔ **Ç**
 * `O'ng Alt + '` ➔ **ʻ**
 
 ---
 
 ### 3️⃣ Turkish Q Rejimi (Maxsus tugmalar)
 Qavslar va tinish belgilari o'rnida yangi harflar joylashadi:
-* `[` ➔ **ğ** | `{` ➔ **Ğ**
-* `]` ➔ **ö** | `}` ➔ **Ö**
-* `;` ➔ **ş** | `:` ➔ **Ş**
-* `'` ➔ **ç** | `"` ➔ **Ç**
+* `[` ➔ **ğ** &nbsp;|&nbsp; `{` ➔ **Ğ**
+* `]` ➔ **ö** &nbsp;|&nbsp; `}` ➔ **Ö**
+* `;` ➔ **ş** &nbsp;|&nbsp; `:` ➔ **Ş**
+* `'` ➔ **ç** &nbsp;|&nbsp; `"` ➔ **Ç**
 
 ---
 
@@ -67,6 +71,8 @@ Qavslar va tinish belgilari o'rnida yangi harflar joylashadi:
 Terminalda quyidagi bitta buyruqni bering:
 
 ```bash
+git clone https://github.com/Azizbek6002/new_uzb_keyboard_for_linux.git
+cd new_uzb_keyboard_for_linux
 ./setup.sh
 ```
 
@@ -91,9 +97,16 @@ sudo ./install.sh
 
 ---
 
-## 🛠 `uzkey.py` Boshqaruv Dasturi
+## 🛡 Xavfsizlik va Maxfiylik
 
-Dasturda qulay CLI boshqaruv vositasi mavjud:
+Ushbu dastur xavfsizlikka eng yuqori darajada e'tibor qaratgan holda ishlab chiqilgan:
+1. **0% Keylogger xavfi:** Dastur klaviatura tugmalarini tinglab turuvchi hech qanday fon jarayoni (daemon / background process) ishlatmaydi.
+2. **Linux Native XKB:** Barcha harflar Linux yadrosi va GNOME/Wayland serverining rasmiy XKB mexanizmi orqali ishlaydi.
+3. **100% Shaffof Kod:** Barcha skriptlar ochiq, hech qanday yopiq binar fayllarsiz yoki tashqi kutubxonalarsiz ishlaydi.
+
+---
+
+## 🛠 `uzkey.py` Boshqaruv Dasturi
 
 ```bash
 # Holatni tekshirish
@@ -119,27 +132,6 @@ Klaviaturaning to'g'ri sozlanganligi va kompilatsiyasini tekshirish:
 ```bash
 python3 tests/test_layouts.py
 ```
-
----
-
-## 📦 GitHub-ga Yuklash (Publish to GitHub)
-
-Ushbu loyihani o'zingizning GitHub profilingizga joylash uchun:
-
-1. [GitHub.com](https://github.com) saytiga kiring va yangi repository oching (masalan, `uzbek-latin-keyboard`).
-2. Terminalda quyidagi buyruqlarni bajaring:
-
-```bash
-cd "uzbek-latin-keyboard"
-
-# O'z GitHub manzilingizni qo'shing:
-git remote add origin https://github.com/USERNAME/uzbek-latin-keyboard.git
-
-# GitHub-ga yuklash:
-git push -u origin main
-```
-
-*(USERNAME o'rniga o'z GitHub foydalanuvchi nomingizni yozing).*
 
 ---
 

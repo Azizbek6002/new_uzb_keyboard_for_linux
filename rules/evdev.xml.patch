@@ -1,0 +1,13 @@
+<!-- Add this under layout "uz" -> <variantList> in /usr/share/X11/xkb/rules/evdev.xml -->
+<variant>
+  <configItem>
+    <name>latin_altgr</name>
+    <description>Uzbek (New Latin, AltGr Mode)</description>
+  </configItem>
+</variant>
+<variant>
+  <configItem>
+    <name>latin_turkish</name>
+    <description>Uzbek (New Latin, Turkish Style)</description>
+  </configItem>
+</variant>

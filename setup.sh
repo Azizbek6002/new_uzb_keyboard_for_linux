@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # =============================================================================
-# Uzbek New Latin Keyboard Layout - User-level Installer (No sudo required)
-# O'zbek Tili Yangi Alifbosi - Foydalanuvchi darajasidagi o'rnatuvchi
+# Uzbek New Latin Keyboard Layout - User-level Secure Installer
+# O'zbek Tili Yangi Alifbosi - Xavfsiz Foydalanuvchi O'rnatuvchisi
 # =============================================================================
 
-set -e
+set -euo pipefail
+umask 022
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -19,15 +20,29 @@ echo -e "${BLUE}${BOLD}   (Uzbek New Latin Keyboard Layout Installer)       ${NC
 echo -e "${BLUE}${BOLD}======================================================${NC}"
 echo ""
 
-MODE="${1:-shift}"
+# Input sanitization and validation
+INPUT_MODE="${1:-shift}"
+MODE=$(echo "$INPUT_MODE" | tr '[:upper:]' '[:lower:]' | tr -cd '[:alnum:]_')
+
+case "$MODE" in
+    shift|altgr|turkish)
+        ;;
+    *)
+        echo -e "${RED}Xato: Noto'g'ri rejim ko'rsatildi: '$INPUT_MODE'.${NC}"
+        echo -e "Ruxsat etilgan rejimlar: ${YELLOW}shift${NC}, ${YELLOW}altgr${NC}, ${YELLOW}turkish${NC}"
+        exit 1
+        ;;
+esac
 
 TARGET_DIR="$HOME/.config/xkb/symbols"
 mkdir -p "$TARGET_DIR"
 
 echo -e "Tanlangan rejim: ${YELLOW}${BOLD}$MODE${NC}"
 
+TARGET_FILE="$TARGET_DIR/uz"
+
 if [ "$MODE" = "altgr" ]; then
-    cat << 'LAYOUT_EOF' > "$TARGET_DIR/uz"
+    cat << 'LAYOUT_EOF' > "$TARGET_FILE"
 // AltGr Mode: Oddiy Shift+o = O, AltGr+o = ö, AltGr+Shift+o = Ö
 default partial alphanumeric_keys
 xkb_symbols "latin" {
@@ -45,7 +60,7 @@ xkb_symbols "latin" {
 LAYOUT_EOF
     echo -e "${GREEN}✓ AltGr rejimi o'rnatildi!${NC}"
 elif [ "$MODE" = "turkish" ]; then
-    cat << 'LAYOUT_EOF' > "$TARGET_DIR/uz"
+    cat << 'LAYOUT_EOF' > "$TARGET_FILE"
 // Turkish Q Style: [ -> ğ, ] -> ö, ; -> ş, ' -> ç
 default partial alphanumeric_keys
 xkb_symbols "latin" {
@@ -60,8 +75,7 @@ xkb_symbols "latin" {
 LAYOUT_EOF
     echo -e "${GREEN}✓ Turkish Q rejimi o'rnatildi!${NC}"
 else
-    # Default: shift mode (user requested)
-    cat << 'LAYOUT_EOF' > "$TARGET_DIR/uz"
+    cat << 'LAYOUT_EOF' > "$TARGET_FILE"
 // Shift Mode: Shift+o = ö, Shift+g = ğ, Shift+s = ş, Shift+c = ç
 // Katta harflar: AltGr+o = O, AltGr+Shift+o = Ö
 default partial alphanumeric_keys
@@ -81,13 +95,17 @@ LAYOUT_EOF
     echo -e "${GREEN}✓ Shift rejimi o'rnatildi!${NC}"
 fi
 
+chmod 644 "$TARGET_FILE"
+
 # GNOME input sources sozlash
 if command -v gsettings >/dev/null 2>&1; then
-    CURRENT_SOURCES=$(gsettings get org.gnome.desktop.input-sources sources)
+    CURRENT_SOURCES=$(gsettings get org.gnome.desktop.input-sources sources 2>/dev/null || echo "[]")
     NEW_SOURCES=$(python3 -c "
 import sys, ast
 try:
     s = ast.literal_eval(sys.argv[1])
+    if not isinstance(s, list):
+        s = [('xkb', 'us')]
     if ('xkb', 'uz+latin') not in s:
         s.append(('xkb', 'uz+latin'))
     print(repr(s))
@@ -103,7 +121,7 @@ echo -e "${GREEN}${BOLD}======================================================${
 echo -e "${GREEN}${BOLD}   Muvaffaqiyatli o'rnatildi! (Installation Complete) ${NC}"
 echo -e "${GREEN}${BOLD}======================================================${NC}"
 echo ""
-echo -e "Klaviatura tilini almashtirish uchun: ${YELLOW}${BOLD}Super (Win) + Space${NC}"
+echo -e "Klaviatura tilini almashtirish: ${YELLOW}${BOLD}Super (Win) + Space${NC}"
 echo ""
 if [ "$MODE" = "altgr" ]; then
     echo -e "Tugmalar tartibi (AltGr rejimi):"
@@ -112,6 +130,12 @@ if [ "$MODE" = "altgr" ]; then
     echo -e "  - O'ng Alt + s  -> ${BOLD}ş${NC}  |  O'ng Alt + Shift + s -> ${BOLD}Ş${NC}"
     echo -e "  - O'ng Alt + c  -> ${BOLD}ç${NC}  |  O'ng Alt + Shift + c -> ${BOLD}Ç${NC}"
     echo -e "  - O'ng Alt + '  -> ${BOLD}ʻ${NC} (Tutuq belgisi)"
+elif [ "$MODE" = "turkish" ]; then
+    echo -e "Tugmalar tartibi (Turkish Q rejimi):"
+    echo -e "  - [  -> ${BOLD}ğ${NC}  |  {  -> ${BOLD}Ğ${NC}"
+    echo -e "  - ]  -> ${BOLD}ö${NC}  |  }  -> ${BOLD}Ö${NC}"
+    echo -e "  - ;  -> ${BOLD}ş${NC}  |  :  -> ${BOLD}Ş${NC}"
+    echo -e "  - '  -> ${BOLD}ç${NC}  |  \"  -> ${BOLD}Ç${NC}"
 else
     echo -e "Tugmalar tartibi (Shift rejimi):"
     echo -e "  - Shift + o  -> ${BOLD}ö${NC}  |  O'ng Alt + o -> ${BOLD}O${NC}  |  O'ng Alt + Shift + o -> ${BOLD}Ö${NC}"

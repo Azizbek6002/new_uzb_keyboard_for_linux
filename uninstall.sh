@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # =============================================================================
-# Uzbek New Latin Keyboard Layout - Uninstaller
+# Uzbek New Latin Keyboard Layout - Secure Uninstaller
 # =============================================================================
 
-set -e
+set -euo pipefail
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -22,12 +22,12 @@ fi
 
 # GNOME input sources tozalash
 if command -v gsettings >/dev/null 2>&1; then
-    CURRENT_SOURCES=$(gsettings get org.gnome.desktop.input-sources sources)
+    CURRENT_SOURCES=$(gsettings get org.gnome.desktop.input-sources sources 2>/dev/null || echo "[]")
     NEW_SOURCES=$(python3 -c "
 import sys, ast
 try:
     s = ast.literal_eval(sys.argv[1])
-    s = [item for item in s if item != ('xkb', 'uz+latin') and item != ('xkb', 'uz')]
+    s = [item for item in s if item not in [('xkb', 'uz+latin'), ('xkb', 'uz')]]
     print(repr(s))
 except Exception:
     print(\"[('xkb', 'us'), ('xkb', 'ru')]\")
@@ -37,10 +37,10 @@ except Exception:
 fi
 
 # System level removal if root
-if [ "$EUID" -eq 0 ]; then
+if [ "${EUID:-$(id -u)}" -eq 0 ]; then
     if [ -f "/usr/share/X11/xkb/symbols/uz.backup" ]; then
         mv "/usr/share/X11/xkb/symbols/uz.backup" "/usr/share/X11/xkb/symbols/uz"
-        echo -e "${GREEN}✓ Tizim zaxira nusxasi tiklandi.${NC}"
+        echo -e "${GREEN}✓ Tizim zaxira nusxasi tiklandi: /usr/share/X11/xkb/symbols/uz${NC}"
     fi
     if [ -f "/usr/share/X11/xkb/rules/evdev.xml.backup" ]; then
         mv "/usr/share/X11/xkb/rules/evdev.xml.backup" "/usr/share/X11/xkb/rules/evdev.xml"

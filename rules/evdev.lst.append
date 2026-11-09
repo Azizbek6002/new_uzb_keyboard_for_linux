@@ -1,0 +1,4 @@
+! variant
+  latin           uz: Uzbek (Latin, Shift Mode)
+  latin_altgr     uz: Uzbek (New Latin, AltGr Mode)
+  latin_turkish   uz: Uzbek (New Latin, Turkish Style)
