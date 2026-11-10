@@ -1,0 +1,27 @@
+name: Keyboard Layout Tests
+
+on:
+  push:
+    branches: [ main, Azizbek ]
+  pull_request:
+    branches: [ main, Azizbek ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install xkb-data and libxkbcommon tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xkb-data x11-xkb-utils libxkbcommon-tools
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run layout unit tests
+        run: python3 tests/test_layouts.py
